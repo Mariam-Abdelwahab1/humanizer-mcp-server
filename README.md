@@ -115,6 +115,51 @@ Configure the server in an MCP client such as Claude Desktop or another compatib
 }
 ```
 
+### Claude Desktop on Windows
+
+Claude Desktop must be installed on the same computer as the server for a `stdio` connection. A Codespace by itself is not a local process that Claude Desktop can launch.
+
+1. Clone this repository locally, or use the existing local folder.
+2. Create the virtual environment and install dependencies as described above.
+3. Find the configuration file from Claude Desktop's **Settings → Developer → Edit Config** option. If needed, the Windows file is commonly located at:
+
+   ```text
+   %APPDATA%\Claude\claude_desktop_config.json
+   ```
+
+4. Copy the contents of `claude_desktop_config.example.json` into that file.
+5. Replace both `C:\path\to\humanizer` values with the real absolute path to this repository.
+6. Replace `replace-with-your-groq-api-key` with your Groq key. Do not commit the real key.
+7. Fully quit and reopen Claude Desktop.
+
+For example, if the repository is located at `D:\projects\humanizer-mcp-server`, use:
+
+```json
+{
+  "mcpServers": {
+    "humanizer": {
+      "command": "D:\\projects\\humanizer-mcp-server\\.venv\\Scripts\\python.exe",
+      "args": [
+        "D:\\projects\\humanizer-mcp-server\\humanizer_server.py"
+      ],
+      "env": {
+        "GROQ_API_KEY": "your-groq-api-key"
+      }
+    }
+  }
+}
+```
+
+After restarting Claude Desktop, look for the MCP tools/hammer icon and enable `humanize_text`. You can then ask Claude to humanize English or Arabic text and specify a word range or keywords to preserve.
+
+To diagnose startup problems, run the same command in PowerShell:
+
+```powershell
+D:\projects\humanizer-mcp-server\.venv\Scripts\python.exe D:\projects\humanizer-mcp-server\humanizer_server.py
+```
+
+The server communicates over standard input/output, so normal logs are written to standard error. Do not add `--transport` arguments; the default `stdio` transport is the correct one for Claude Desktop.
+
 ## Tool
 
 The server exposes one tool:

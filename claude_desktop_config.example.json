@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "humanizer": {
+      "command": "C:\\path\\to\\humanizer\\.venv\\Scripts\\python.exe",
+      "args": [
+        "C:\\path\\to\\humanizer\\humanizer_server.py"
+      ],
+      "env": {
+        "GROQ_API_KEY": "replace-with-your-groq-api-key",
+        "GROQ_MODEL": "openai/gpt-oss-120b"
+      }
+    }
+  }
+}
