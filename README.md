@@ -80,6 +80,25 @@ $env:MCP_TRANSPORT = "streamable-http"
 python humanizer_server.py
 ```
 
+## Run in GitHub Codespaces
+
+1. Open the repository on GitHub.
+2. Select **Code** → **Codespaces** → **Create codespace on main**.
+3. Wait for the development container to install the dependencies.
+4. Add `GROQ_API_KEY` under the codespace's environment secrets, or set it in the terminal:
+
+   ```bash
+   export GROQ_API_KEY="your-groq-api-key"
+   ```
+
+5. Start the MCP server:
+
+   ```bash
+   python humanizer_server.py
+   ```
+
+The repository includes `.devcontainer/devcontainer.json`, so Codespaces uses a consistent Python environment and installs `requirements.txt` automatically. Codespaces is intended for interactive development and testing; it does not keep the server running after the codespace stops.
+
 Configure the server in an MCP client such as Claude Desktop or another compatible host. Example `stdio` configuration:
 
 ```json
