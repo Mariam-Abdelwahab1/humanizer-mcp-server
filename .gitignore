@@ -8,6 +8,8 @@ env/
 .mypy_cache/
 .pytest_cache/
 .ruff_cache/
+.eggs/
+*.egg-info/
 .ipynb_checkpoints/
 .streamlit/secrets.toml
 *.log

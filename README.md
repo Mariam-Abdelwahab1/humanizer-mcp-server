@@ -38,6 +38,14 @@ python -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
+For a reusable command available on Windows, macOS, and Linux, install the project itself:
+
+```bash
+python -m pip install -e .
+```
+
+This provides the `humanizer-mcp` command. It uses the same virtual environment and configuration as `python humanizer_server.py`.
+
 Set the required API key. Never commit API keys to source control.
 
 Windows PowerShell:
@@ -72,6 +80,22 @@ Start the server with the default `stdio` transport:
 ```bash
 python humanizer_server.py
 ```
+
+After installing the project with `pip install -e .`, you can use:
+
+```bash
+humanizer-mcp
+```
+
+## Test locally without an API key
+
+The core language detection, analytics, keyword preservation, and guardrail validation tests do not call Groq or Redis:
+
+```bash
+python -m unittest discover -s tests -v
+```
+
+To test the full rewrite flow, set a valid `GROQ_API_KEY` and invoke `humanize_text` from your MCP client. The server requires the key only when a rewrite is requested.
 
 For an HTTP-based MCP transport, set the transport before starting:
 
@@ -115,9 +139,9 @@ Configure the server in an MCP client such as Claude Desktop or another compatib
 }
 ```
 
-### Claude Desktop on Windows
+### Claude Desktop on Windows, macOS, and Linux
 
-Claude Desktop must be installed on the same computer as the server for a `stdio` connection. A Codespace by itself is not a local process that Claude Desktop can launch.
+Claude Desktop must be installed on the same computer as the server for a `stdio` connection. A Codespace by itself is not a local process that Claude Desktop can launch. The exact config file location depends on the operating system; use Claude Desktop's **Settings → Developer → Edit Config** option when available.
 
 1. Clone this repository locally, or use the existing local folder.
 2. Create the virtual environment and install dependencies as described above.
@@ -128,11 +152,11 @@ Claude Desktop must be installed on the same computer as the server for a `stdio
    ```
 
 4. Copy the contents of `claude_desktop_config.example.json` into that file.
-5. Replace both `C:\path\to\humanizer` values with the real absolute path to this repository.
+5. Replace the example paths with the real absolute paths to this repository. Use doubled backslashes in Windows JSON paths.
 6. Replace `replace-with-your-groq-api-key` with your Groq key. Do not commit the real key.
 7. Fully quit and reopen Claude Desktop.
 
-For example, if the repository is located at `D:\projects\humanizer-mcp-server`, use:
+For example, if the repository is located at `D:\projects\humanizer-mcp-server` on Windows, use:
 
 ```json
 {
@@ -141,6 +165,24 @@ For example, if the repository is located at `D:\projects\humanizer-mcp-server`,
       "command": "D:\\projects\\humanizer-mcp-server\\.venv\\Scripts\\python.exe",
       "args": [
         "D:\\projects\\humanizer-mcp-server\\humanizer_server.py"
+      ],
+      "env": {
+        "GROQ_API_KEY": "your-groq-api-key"
+      }
+    }
+  }
+}
+```
+
+On macOS or Linux, use the virtual environment's Python executable instead:
+
+```json
+{
+  "mcpServers": {
+    "humanizer": {
+      "command": "/home/you/projects/humanizer-mcp-server/.venv/bin/python",
+      "args": [
+        "/home/you/projects/humanizer-mcp-server/humanizer_server.py"
       ],
       "env": {
         "GROQ_API_KEY": "your-groq-api-key"

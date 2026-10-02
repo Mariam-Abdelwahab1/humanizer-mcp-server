@@ -784,7 +784,7 @@ async def humanize_text(
     )
 
 
-if __name__ == "__main__":
+def main() -> None:
     # Warm up heavy resources so the first tool call is fast; failures are non-fatal.
     SERVICES.embedder()
     SERVICES.redis()
@@ -792,3 +792,7 @@ if __name__ == "__main__":
     logger.info(
         "Starting Humanizer MCP server (transport=%s, model=%s)", transport, GROQ_MODEL)
     mcp.run(transport=transport)  # type: ignore[arg-type]
+
+
+if __name__ == "__main__":
+    main()
